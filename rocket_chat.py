@@ -156,6 +156,10 @@ def compare_and_print_new_messages(rocket, recent_dms):
         saved_message_ids = set(saved_data[room_id].get("message_ids", []))
 
         for message in current_messages:
+            # Exclude messages sent by yourself
+            if message['u']['username'] == USERNAME:
+                continue
+
             if message['_id'] not in saved_message_ids:
                 # Find the username that is not yours
                 other_usernames = [
