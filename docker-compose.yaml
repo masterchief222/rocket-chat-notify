@@ -1,0 +1,11 @@
+services:
+  rocket-chat-bot:
+    build:
+      context: .
+    environment:
+      - ROCKETCHAT_URL=${ROCKETCHAT_URL}
+      - ROCKETCHAT_USERNAME=${ROCKETCHAT_USERNAME}
+      - ROCKETCHAT_PASSWORD=${ROCKETCHAT_PASSWORD}
+      - PUSHMORE_URL=${PUSHMORE_URL}
+      - INTERVAL=3
+    restart: unless-stopped
