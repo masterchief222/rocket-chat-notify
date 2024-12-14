@@ -74,7 +74,7 @@ def fetch_all_dms(rocket):
 # Fetch recent messages from a room
 
 
-def fetch_recent_messages(rocket, room_id, count=50):
+def fetch_recent_messages(rocket, room_id, count=10):
     try:
         history_response = rocket.im_history(room_id, count=count).json()
         if not history_response.get('success', False):
@@ -110,7 +110,7 @@ def save_initial_messages(rocket, recent_dms):
                 f"Skipping DM due to missing '_id' or 'usernames': {dm}")
             continue
 
-        messages = fetch_recent_messages(rocket, room_id, count=50)
+        messages = fetch_recent_messages(rocket, room_id, count=10)
         saved_data[room_id] = {
             "usernames": usernames,
             # Save only message IDs as a list
@@ -152,7 +152,7 @@ def compare_and_print_new_messages(rocket, recent_dms):
                 "messages": []
             }
 
-        current_messages = fetch_recent_messages(rocket, room_id, count=50)
+        current_messages = fetch_recent_messages(rocket, room_id, count=10)
         saved_message_ids = set(saved_data[room_id].get("message_ids", []))
 
         for message in current_messages:
@@ -189,7 +189,7 @@ if __name__ == "__main__":
     rocket = get_rocket_client()
 
     all_dms = fetch_all_dms(rocket)
-    recent_dms = all_dms[:10]  # Take the 10 most recent DMs
+    recent_dms = all_dms  # Take the 10 most recent DMs
     save_initial_messages(rocket, recent_dms)
 
     while True:
